@@ -13,6 +13,7 @@ const Signin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((value) => {
         console.log(value);
+        navigate("/admin");
         toast.success("Successfully Sign In!");
       })
       .catch((err) => {
@@ -20,7 +21,6 @@ const Signin = () => {
         console.log(err);
         toast.error("Invalid Data!");
       });
-    navigate("/userdashboard");
   };
 
   return (

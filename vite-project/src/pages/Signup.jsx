@@ -3,8 +3,20 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useFormik } from "formik";
 
+const initialValues = {
+  username: "",
+  email: "",
+  password: "",
+};
 const Signup = () => {
+  const { values, errors, handleBlur, handleChange, handle } = useFormik({
+    initialValues: initialValues,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
   const auth = getAuth(app);
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -15,12 +27,12 @@ const Signup = () => {
       .then((value) => {
         console.log(value);
         toast.success("Successfully Created Account!");
+        navigate("/signin");
       })
       .catch((err) => {
         console.log(err);
         toast.error("Account not created!");
       });
-    navigate("/signin");
   };
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
@@ -33,15 +45,17 @@ const Signup = () => {
             type="text"
             className="block border border-grey-light w-full p-3 rounded mb-4"
             name="name"
+            id="username"
             placeholder="username"
           />
 
           <input
             onChange={(e) => setEmail(e.target.value)}
             value={email}
-            type="text"
+            type="email"
             className="block border border-grey-light w-full p-3 rounded mb-4"
             name="email"
+            id="email"
             placeholder="Email"
           />
 
@@ -49,6 +63,7 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
+            id="password"
             className="block border border-grey-light w-full p-3 rounded mb-4"
             name="password"
             placeholder="Password"
@@ -59,7 +74,7 @@ const Signup = () => {
             type="submit"
             className="w-full text-center py-3 rounded bg-cyan-700 text-white hover:bg-green-dark focus:outline-none my-1"
           >
-            <Link to="/signin">Create Account</Link>
+            Create Account
           </button>
         </div>
 

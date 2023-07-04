@@ -102,7 +102,7 @@ const Products = () => {
       }
     );
   };
-
+  // navigate("/product");
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -248,7 +248,12 @@ const Products = () => {
             <div className="mt-1 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
               <div className="text-center">
                 {image ? (
-                  <img className="m-auto h-28 w-28 rounded-sm" id="image-preview" src={image} alt="" />
+                  <img
+                    className="m-auto h-28 w-28 rounded-sm"
+                    id="image-preview"
+                    src={image}
+                    alt=""
+                  />
                 ) : (
                   <svg
                     className="mx-auto h-12 w-12 text-gray-300"

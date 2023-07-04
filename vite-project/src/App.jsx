@@ -11,6 +11,7 @@ import UserNavbar from "./user/UserNavbar";
 import UserDashboard from "./user/UserDashboard";
 import AddProducts from "./admin/AddProducts";
 import AddUserProduct from "./user/AddUserProduct";
+import EditProduct from "./admin/EditProduct";
 function App() {
   return (
     <>
@@ -26,15 +27,14 @@ function App() {
           <Route element={<Navbar />}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/addproduct" element={<AddProducts />} />
+            <Route path="/editproduct" element={<EditProduct />} />
           </Route>
-
           <Route path="/product" element={<Product />} />
           {/* User Dashboard */}
           <Route path="/fetch" element={<ShowProducts />} />
           <Route path="/usernav" element={<UserNavbar />} />
           <Route path="/userdashboard" element={<UserDashboard />} />
           <Route path="/userproduct" element={<AddUserProduct />} />
-
         </Routes>
       </Router>
     </>
