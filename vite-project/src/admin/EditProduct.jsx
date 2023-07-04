@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -10,6 +10,7 @@ const EditProduct = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [image, setImage] = useState(null);
+  const [name, setName] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -18,10 +19,8 @@ const EditProduct = () => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          // Set the product data if the document exists
           setProduct(docSnap.data());
         } else {
-          // Handle case where the document doesn't exist
           console.log("Document not found!");
         }
       } catch (error) {
@@ -64,33 +63,17 @@ const EditProduct = () => {
       navigate("/admin");
     }
   };
-
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const { price, setprice } = e.target;
-    const { description, setdescription } = e.target;
-    const { condition, setcondition } = e.target;
-    const { city, setcity } = e.target;
-    const { phoneNo, setphoneNo } = e.target;
-    const { image, setimage } = e.target;
-    const { images, data, files } = e.target;
+    const { name, value, files } = e.target;
     if (name === "file-upload") {
       setImage(files[0]);
     } else {
       setProduct((prevProduct) => ({
         ...prevProduct,
         [name]: value,
-        [price]: setprice,
-        [description]: setdescription,
-        [condition]: setcondition,
-        [city]: setcity,
-        [phoneNo]: setphoneNo,
-        [image]: setimage,
-        [images]: data,
       }));
     }
   };
-
   return (
     <div className="container pt-4 flex justify-center m-auto">
       {/* Existing code... */}
@@ -105,7 +88,10 @@ const EditProduct = () => {
               Product Name
             </label>
             <input
-              onChange={handleInputChange}
+              onChange={(e) => {
+                setName(e.target.value);
+                handleInputChange(e);
+              }}
               value={product?.name || ""}
               name="name"
               placeholder="Product Name"
@@ -125,6 +111,7 @@ const EditProduct = () => {
             <input
               onChange={handleInputChange}
               value={product?.price || ""}
+              name="price"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               placeholder="Full Day Price"
             />
@@ -141,6 +128,7 @@ const EditProduct = () => {
             </label>
             <input
               onChange={handleInputChange}
+              name="description"
               value={product?.description || ""}
               placeholder="Product Description"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -159,6 +147,7 @@ const EditProduct = () => {
             <select
               onChange={handleInputChange}
               value={product?.condition || ""}
+              name="condition"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
               <option value={1}>1</option>
@@ -179,6 +168,7 @@ const EditProduct = () => {
             <input
               onChange={handleInputChange}
               value={product?.city || ""}
+              name="city"
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-city"
               type="text"
@@ -194,6 +184,7 @@ const EditProduct = () => {
               PhoneNo
             </label>
             <input
+              name="phoneNo"
               onChange={handleInputChange}
               value={product?.phoneNo || ""}
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -236,7 +227,7 @@ const EditProduct = () => {
                     <span className="text-center">Upload a file</span>
                     <input
                       onChange={handleInputChange}
-                      files={product?.image || ""}
+                      // files={product?.image || ""}
                       id="file-upload"
                       name="file-upload"
                       type="file"
