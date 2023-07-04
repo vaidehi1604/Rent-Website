@@ -12,6 +12,8 @@ import UserDashboard from "./user/UserDashboard";
 import AddProducts from "./admin/AddProducts";
 import AddUserProduct from "./user/AddUserProduct";
 import EditProduct from "./admin/EditProduct";
+import Login from "./pages/login";
+
 function App() {
   return (
     <>
@@ -30,6 +32,8 @@ function App() {
             <Route path="/editproduct" element={<EditProduct />} />
           </Route>
           <Route path="/product" element={<Product />} />
+          <Route path="/login" element={<Login/>} />
+
           {/* User Dashboard */}
           <Route path="/fetch" element={<ShowProducts />} />
           <Route path="/usernav" element={<UserNavbar />} />

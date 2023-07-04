@@ -23,7 +23,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const createUser = () => {
-    createUserWithEmailAndPassword(auth, email, password)
+    const user = createUserWithEmailAndPassword(auth, email, password)
       .then((value) => {
         console.log(value);
         toast.success("Successfully Created Account!");
@@ -33,6 +33,9 @@ const Signup = () => {
         console.log(err);
         toast.error("Account not created!");
       });
+    if (user.length >= 1) {
+      toast.error("Email Already Exist!");
+    }
   };
   return (
     <div className="bg-grey-lighter min-h-screen flex flex-col">
