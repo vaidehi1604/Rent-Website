@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import Logo from "../assets/rent2.png";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -9,13 +9,20 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email;
-  console.log(email);
+
+  useEffect(() => {
+    if (email) {
+      localStorage.setItem("email", email);
+    }
+    console.log(email);
+  }, [email]);
   const auth = getAuth();
 
   const logout = () => {
     signOut(auth)
       .then(() => {
         toast.success("User Successfully Logout!");
+        localStorage.removeItem("email");
         navigate("/");
       })
       .catch((error) => {
@@ -184,8 +191,8 @@ const Navbar = () => {
                 </Link>
               </li>
 
-              <li className="flex top-1 justify-center  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-xs text-center m-2 p-2 rounded text-gray-300 outline outline-offset-1 outline-1 ">
-                {email}
+              <li className="flex  justify-center  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-xs text-center m-3 p-1 rounded text-gray-300 outline outline-offset-2 outline-1">
+                {email ? email : localStorage.getItem("email")}
               </li>
             </ul>
           </div>

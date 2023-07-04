@@ -6,6 +6,7 @@ import { db } from "../firebase";
 const EditProduct = () => {
   const location = useLocation();
   const id = location.state?.data;
+  const email = localStorage.getItem('email');
 
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -31,38 +32,75 @@ const EditProduct = () => {
     fetchProduct();
   }, [id]);
 
+  // const handleEdit = async () => {
+  //   if (product) {
+  //     const { name, price, description, condition, city, phoneNo } = product;
+
+  //     // Perform the update operation using the fetched data
+  //     const docRef = doc(db, "products", id);
+  //     if (image) {
+  //       const imageUrl = await uploadImage(image);
+  //       console.log(imageUrl);
+  //       await updateDoc(docRef, {
+  //         name,
+  //         price,
+  //         description,
+  //         condition,
+  //         city,
+  //         phoneNo,
+  //         image: imageUrl,
+  //       });
+  //     } else {
+  //       await updateDoc(docRef, {
+  //         name,
+  //         price,
+  //         description,
+  //         condition,
+  //         city,
+  //         phoneNo,
+  //       });
+  //     }
+  //     // Handle navigation or other logic after the update
+  //     navigate("/admin");
+  //   }
+  // };
+
   const handleEdit = async () => {
-    if (product) {
+    try {
+      if (!product) {
+        console.log("Product data is missing");
+        return;
+      }
+
       const { name, price, description, condition, city, phoneNo } = product;
 
       // Perform the update operation using the fetched data
       const docRef = doc(db, "products", id);
+      let updatedData = {
+        name,
+        price,
+        description,
+        condition,
+        city,
+        phoneNo,
+      };
+
       if (image) {
         const imageUrl = await uploadImage(image);
-        console.log(imageUrl);
-        await updateDoc(docRef, {
-          name,
-          price,
-          description,
-          condition,
-          city,
-          phoneNo,
-          image: imageUrl,
-        });
-      } else {
-        await updateDoc(docRef, {
-          name,
-          price,
-          description,
-          condition,
-          city,
-          phoneNo,
-        });
+        console.log("Uploaded image URL:", imageUrl);
+        updatedData.image = imageUrl;
       }
+
+      await updateDoc(docRef, updatedData);
+      console.log("Product updated successfully");
+
       // Handle navigation or other logic after the update
       navigate("/admin");
+    } catch (error) {
+      console.log("Error updating product:", error);
     }
   };
+
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "file-upload") {

@@ -40,8 +40,6 @@ const AdminDashboard = () => {
   };
 
   const editproduct = (data) => {
-    console.log("hello");
-    console.log(data);
     setFormId(data);
     navigate("/editproduct", { state: { data } });
   };
